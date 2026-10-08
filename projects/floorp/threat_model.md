@@ -78,7 +78,7 @@ xvfb-run -a deno task test
 The browser runner automatically builds its test assets and starts a test browser,
 Vite servers, and Marionette on loopback. These local services must remain usable
 inside the offline container. Tests can be scoped, for example:
-`xvfb-run -a deno task test -- --near browser-features/modules/modules/chrome-web-store`.
+`xvfb-run -a deno task test --near browser-features/modules/modules/chrome-web-store`.
 The locked upstream browser-test fixtures are collected during the online image
 build. Production bundles, source code, caches, and the locked Runtime remain
 available for reproduction and rebuilding.

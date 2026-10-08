@@ -15,7 +15,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Scanner contract: keep the Floorp checkout and all build products in /src.
-COPY . /src
+# The scanner adds Git history to the final image; avoid copying it into every
+# intermediate build layer as well.
+COPY --exclude=.git . /src
 WORKDIR /src
 
 # proxy_ca is optional, for local checks behind a TLS-intercepting proxy.
@@ -27,7 +29,6 @@ if [ -f /run/secrets/proxy_ca ]; then
     export NODE_EXTRA_CA_CERTS=/run/secrets/proxy_ca
     export GIT_SSL_CAINFO=/run/secrets/proxy_ca
 fi
-git submodule update --init --recursive
 deno install --frozen --allow-scripts
 
 # Cache build and test drivers before the scanner loses Internet access.
